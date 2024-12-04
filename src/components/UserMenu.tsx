@@ -9,6 +9,9 @@ export function UserMenu() {
 
   const [user, setUser] = useState(globalStore.getState().user);
 
+  const { login } = globalStore.getState();
+  const { logout } = globalStore.getState();
+
   useEffect(() => {
     const unsubscribe = globalStore.subscribe(() => {
       setUser(globalStore.getState().user);
@@ -18,21 +21,6 @@ export function UserMenu() {
       unsubscribe();
     };
   }, []);
-
-  function login() {
-    globalStore.setState({
-      user: {
-        email: 'micheloliveira.dev@gmail.com',
-        name: 'Michel de Oliveira',
-      },
-    });
-  }
-
-  function logout() {
-    globalStore.setState({
-      user: null,
-    });
-  }
 
   if (!user) {
     return (
