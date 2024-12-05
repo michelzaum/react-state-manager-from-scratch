@@ -4,7 +4,7 @@ type SetterFn<T> = (prevState: T) => Partial<T>;
 type SetStateFn<T> = (partialState: Partial<T> | SetterFn<T>) => void;
 
 export function createStore<TState extends Record<string, any>>(
-  createState: (setState: SetStateFn<TState>) => TState,
+  createState: (setState: SetStateFn<TState>, getState: () => TState) => TState,
 ) {
   let state: TState;
   let listeners: Set<() => void>;
@@ -43,13 +43,8 @@ export function createStore<TState extends Record<string, any>>(
     return useSyncExternalStore(subscribe, () => selector(state));
   }
 
-  state = createState(setState);
+  state = createState(setState, getState);
   listeners = new Set();
 
-  return {
-    setState,
-    getState,
-    subscribe,
-    useStore,
-  };
+  return useStore;
 }
