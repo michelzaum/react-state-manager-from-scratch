@@ -1,3 +1,5 @@
+import { useSyncExternalStore } from 'react';
+
 type SetterFn<T> = (prevState: T) => Partial<T>;
 type SetStateFn<T> = (partialState: Partial<T> | SetterFn<T>) => void;
 
@@ -35,6 +37,12 @@ export function createStore<TState extends Record<string, any>>(
     return state;
   }
 
+  function useStore<TValue>(
+    selector: (currentState: TState) => TValue,
+  ): TValue {
+    return useSyncExternalStore(subscribe, () => selector(state));
+  }
+
   state = createState(setState);
   listeners = new Set();
 
@@ -42,5 +50,6 @@ export function createStore<TState extends Record<string, any>>(
     setState,
     getState,
     subscribe,
+    useStore,
   };
 }
