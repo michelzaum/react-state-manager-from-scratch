@@ -10,7 +10,7 @@ export function App() {
   return (
     <>
       <AppBar />
-    </>
       <TodosList />
+    </>
   );
 }
