@@ -13,3 +13,8 @@ phases:
   build:
     commands:
       - yarn build
+
+  post_build:
+    commands:
+      - aws s3 sync --delete ./dist s3://react-state-from-zero
+      - aws cloudfront create-invalidation --distribution-id ETBO7Y1L5PL83 --paths /index.html
